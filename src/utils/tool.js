@@ -11,13 +11,13 @@ export function useWaterfall(data,clientW, columnNums,gap) {
   const columnHeights = []; // 列的高度
   let newList = JSON.parse(JSON.stringify(data)); // 深拷贝数据
   newList.length > 0 &&
-    newList.forEach((obj, i) => {
+    newList.forEach(async (obj, i) => {
       let index = i % columnNums; // 遍历的图片和列数取余
       obj.w = pW / columnNums; // 图片宽度
       // 创建图片对象获取图片的宽高
       let img = new Image();
       img.src = obj.img;
-      obj.h = Number((img.height * (obj.w / img.width)).toFixed(0));
+      obj.h = Number((img.height * (obj.w / img.width)).toFixed(0)) ;
       obj.left = index * (obj.w + gap); //左边距离 2列的话，1/3/5距离左边距离为0，2/4/6距离左边距离为图片的宽度+间隔距离
       obj.top = columnHeights[index] + gap || 0; // 定位高度
       // 第一张和第二张距离顶部的高度为0
@@ -32,4 +32,20 @@ export function useWaterfall(data,clientW, columnNums,gap) {
       }
     });
   return newList;
+}
+
+export const getImgSize = (url)=>{
+  return new Promise((resolve,reject)=>{
+    let img = new Image()
+    img.onload=()=>{
+      resolve({
+        width: img.width,
+        height: img.height
+    });
+    },
+    img.onerror=()=>{
+      reject(new Error('error'));
+    }
+    img.src = url;
+  })
 }
