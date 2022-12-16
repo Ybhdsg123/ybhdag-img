@@ -29,6 +29,7 @@ import { ref, watchEffect, onMounted } from "vue";
 import { useWaterfall } from "@/utils/tool";
 let clientW = ref(); // 屏幕宽度
 let clientH = ref(); // 屏幕高度
+let imgs = ref([]);
 let arrImgs = ref([]); // 获取的图片数据
 let columnNums = ref(2); // 要几列展示
 const gap = 13; // 图片之间的间隔
@@ -40,22 +41,31 @@ watchEffect(() => {
 onMounted(() => {
   window.onresize = () => {
     clientW.value = document.documentElement.clientWidth;
-    getImgs();
+    // getImgs();
+    // 计算图片的大小和定位 瀑布流
+    arrImgs.value = useWaterfall(
+      imgs.value,
+      clientW.value,
+      columnNums.value,
+      gap
+    );
   };
 });
 // 获取所有图片
 const getImgs = () => {
-  let arrimg = [];
   const objImgs = import.meta.glob("@/assets/hunli/**", {
     eager: true,
   });
   for (let key in objImgs) {
-    arrimg.push({ img: "../../" + objImgs[key].default });
+    imgs.value.push({ img: "../../" + objImgs[key].default });
   }
-  console.log(arrimg);
   // 计算图片的大小和定位 瀑布流
-  arrImgs.value = useWaterfall(arrimg, clientW.value, columnNums.value, gap);
-  console.log(arrImgs.value);
+  arrImgs.value = useWaterfall(
+    imgs.value,
+    clientW.value,
+    columnNums.value,
+    gap
+  );
 };
 getImgs();
 </script>
