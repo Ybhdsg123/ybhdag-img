@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./",
+    "outDir": "./dist",
     // element-plus/global =》 Element Plus全局组件类型声明
     // vite-plugin-svg-icons/client =》 svg-icon类型声明
     // pinia-plugin-persist =》 pinia 持久化插件
