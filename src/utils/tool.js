@@ -34,6 +34,8 @@ export function useWaterfall(data,clientW, columnNums,gap) {
   return newList;
 }
 
+
+// 异步得到图片大小
 export const getImgSize = (url)=>{
   return new Promise((resolve,reject)=>{
     let img = new Image()
